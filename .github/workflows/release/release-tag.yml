@@ -1,0 +1,31 @@
+name: 🏷️ Tag  on PR Complete
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  update-version:
+    name: Update version and tag
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git config
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run bump-version script
+        run: .github/scripts/update-version.sh
+
+      - name: Create Git tag (if needed)
+        if: env.bump == 'yes'
+        run: |
+          git tag ${{ env.new_tag }}
+          git push origin ${{ env.new_tag }}

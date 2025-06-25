@@ -1,0 +1,41 @@
+name: 🚀 Manual promote development to production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  verify-trigger-user:
+    if: github.event_name == 'push' && github.actor == 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check triggering user is kevinsmarter
+        run: |
+          if [ "${{ github.event.head_commit.author.name }}" != "kevinsmarter" ]; then
+            echo "⛔️ Only kevinsmarter may trigger prod workflow!"
+            exit 1
+          else
+            echo "✅ Push from GitHub Actions allowed"
+          fi
+          
+  promote:
+    runs-on: ubuntu-latest
+    if: github.actor == 'kevinsmarter'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Merge development into prod
+        run: |
+          git checkout production
+          git merge origin/development --no-ff -m "Promote development to production"
+          git push origin production
+
+#      - name: Release new release
+#        uses: ./.github/workflows/release/release-latest-release.yml

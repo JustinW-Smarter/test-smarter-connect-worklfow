@@ -1,0 +1,49 @@
+name: Reusable HTML linter
+
+on:
+  workflow_call:
+
+jobs:
+  html-validate:
+    name: HTML Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install html-validate
+        run: npm install --save-dev html-validate
+
+      - name: Install Prettier
+        run: npm install --save-dev prettier
+
+      - name: Install tidy-html5
+        run: sudo apt-get install -y tidy
+
+      - name: Prettier auto-fix HTML
+        run: |
+          if find . -name "*.htm" | grep -q .; then
+            echo "Found .htm files, running Prettier on them."
+            npx prettier "**/*.htm" --write || true
+          else
+            echo "No .htm files found, skipping Prettier for .htm files."
+          fi
+          npx prettier "**/*.html" --write || true
+
+      - name: Apply basic HTML fixes with tidy
+        run: |
+          for f in $(find . -name "*.html" -o -name "*.htm"); do
+            tidy -config tidy.conf -modify "$f" >/dev/null 2>&1 || true
+          done
+
+      - name: Run html-validate
+        run: |
+          npx html-validate "**/*.html" "**/*.htm" --config htmlvalidate.json --formatter stylish > html-validate-report.txt || true
+          [ -s html-validate-report.txt ] || echo "" > html-validate-report.txt
+          cat html-validate-report.txt
+
+      - name: Upload HTML-validate Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-validate-report
+          path: html-validate-report.txt

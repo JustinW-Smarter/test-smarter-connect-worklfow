@@ -1,0 +1,57 @@
+name: Auto sync test on development
+
+on:
+  workflow_run:
+    workflows: ["Feature into development"]
+    types: [completed]
+
+jobs:
+  auto-promote:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup git identity
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Ensure origin/development is up to date
+        run: git fetch origin development:origin/development
+
+      - name: Checkout test branch
+        run: |
+          git checkout test
+          git pull origin test
+
+      - name: Fetch latest development
+        run: git fetch origin development:development
+
+      - name: Merge development into test
+        run: |
+          git merge development --no-edit || echo "Nothing to merge"
+
+      - name: Wait for GitHub to update refs
+        run: sleep 15
+
+      - name: Re-fetch development
+        run: git fetch origin development:development
+
+      - name: Re-merge development into test
+        run: |
+          git merge development --no-edit || echo "Nothing to merge"
+
+      - name: Push test (if needed)
+        run: |
+          if git log origin/test..HEAD --oneline | grep .; then
+            git push origin test
+          else
+            echo "✅ No changes to push"
+          fi

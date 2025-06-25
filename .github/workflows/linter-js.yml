@@ -1,0 +1,38 @@
+name: Reusable JS linters
+
+on:
+  workflow_call:
+
+jobs:
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ESLint and plugins
+        run: npm install --save-dev eslint @eslint/js globals @typescript-eslint/eslint-plugin @typescript-eslint/parser @eslint/json @eslint/markdown prettier eslint-config-prettier eslint-plugin-prettier
+
+      - name: Run ESLint # Controleer of er .ts-bestanden zijn en voer ESLint uit met --fix
+        run: |
+          echo "Running ESLint..."
+          if [ ! -f eslint-report.txt ]; then
+            touch eslint-report.txt
+          fi
+          ls -la
+          if ls **/*.ts 1> /dev/null 2>&1; then
+            echo "Found .ts files, running ESLint on them."
+            npx eslint --fix --no-ignore "**/*.ts" --output-file eslint-report.txt || true
+          else
+            echo "No .ts files found, skipping ESLint for .ts files."
+          fi
+          npx eslint --fix "**/*.js" "**/*.json" --ignore-pattern package-lock.json --config eslint.config.mjs --output-file eslint-report.txt || true
+          [ -s eslint-report.txt ] || echo "" > eslint-report.txt
+          cat eslint-report.txt
+
+      - name: Upload ESLint Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-report
+          path: eslint-report.txt

@@ -1,0 +1,24 @@
+name: Release new release on latest tag
+
+on:
+  workflow_call:
+
+jobs:
+  new-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          latest_tag=$(git describe --tags --abbrev=0)
+          echo "tag=$latest_tag" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1 # miss naar v2 overzetten
+        with:
+          tag_name: ${{ steps.get_tag.outputs.tag }}

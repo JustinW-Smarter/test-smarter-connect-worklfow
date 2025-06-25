@@ -1,0 +1,36 @@
+name: Reusable CSS linter
+
+on:
+  workflow_call:
+
+jobs:
+  stylelint:
+    name: Stylelint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install stylelint-config-recommended --save-dev
+
+      - name: List CSS files
+        run: |
+          echo "Listing CSS files:"
+          find . -type f -name "*.css" -o -name "*.scss" -o -name "*.sass"
+
+      - name: Run Stylelint
+        run: |
+          echo "Running Stylelint..."
+          if [ ! -f stylelint-report.txt ]; then
+          touch stylelint-report.txt
+          fi
+          npx stylelint --fix "**/*.css" "**/*.scss" "**/*.sass" --config stylelintrc.json --output-file stylelint-report.txt || true
+          [ -s stylelint-report.txt ] || echo "" --output-file stylelint-report.txt
+          cat stylelint-report.txt
+
+      - name: Upload Stylelint Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stylelint-report
+          path: stylelint-report.txt

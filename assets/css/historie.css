@@ -1,0 +1,267 @@
+* {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+    background-color: white;
+    margin: 0px 0px 0px 0px;
+}
+
+fieldset {
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    /* padding-bottom: 50px; */
+}
+
+.logo {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.search,
+.search-opboeken {
+    background: #fffcdf;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.search i.fa-solid.fa-arrows-rotate,
+.search-opboeken i.fa-solid.fa-arrows-rotate {
+    font-size: 26px;
+    color: black;
+    margin-top: 12px;
+    margin-left: -38px;
+}
+
+.history {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+}
+
+.history a {
+    color: grey;
+}
+
+.logo img {
+    /* width: auto; */
+    width: 300px;
+    height: 75px;
+    object-fit: contain;
+}
+
+span#foutmelding,
+span#foutmelding-twee {
+    color: red;
+    font-size: 14px;
+}
+
+.chosen-results-wrapper {
+    /* margin: -22px 0px 0px 0px !important; */
+}
+
+.search input {
+    /* border-radius: 6px 6px 0px 0px; */
+}
+
+h2 {
+    margin: 0px;
+    padding: 0px;
+    color: #7ebba0;
+    text-decoration: underline;
+    /* margin-top: -50px; */
+}
+
+.search input {
+    font-style: italic;
+}
+
+fieldset label,
+form label {
+    width: 100%;
+    display: block;
+    font-size: 20px;
+    color: #838383;
+}
+
+form p {
+    font-size: 20px;
+    width: 100%;
+}
+
+div#wrapper {
+    margin: 0 auto;
+    max-width: 100%;
+    width: 500px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+fieldset label {
+    margin: 10px 0px 4px 0px;
+    color: #838383;
+}
+
+.logo-wrapper {
+    text-align: center;
+    padding: 50px 0px;
+}
+
+li:hover {
+    color: green;
+    text-decoration: underline;
+}
+
+fieldset div {
+    margin: 20px 0px;
+    /* display: inline; */
+    /* width: 100%; */
+}
+
+li em {
+    cursor: pointer;
+}
+
+ul.chosen-results li,
+ul.chosen-results-opboeken li {
+    margin: 0px 0px 10px 0px;
+}
+
+hr {
+    margin-block-start: 3em;
+    margin-block-end: 3em;
+}
+
+ul.chosen-results,
+ul.chosen-results-opboeken {
+    max-height: 250px;
+    height: 250px;
+    overflow-y: scroll;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 0px 0px 6px 6px;
+    outline: 0;
+    min-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 2px solid #dbdbdb;
+    background: white;
+    font-size: 18px;
+    margin-top: -22px;
+}
+
+ul.chosen-results li,
+ul.chosen-results-opboeken li {
+    background: #7dbda2;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+fieldset#mijzelf_form h2 {
+    margin-top: -20px;
+}
+
+.wrapper-bedankt p {
+    font-size: 20px;
+}
+
+.buttons-homepage a {
+    display: block;
+    width: 300px;
+    margin: 0 auto;
+    padding: 18px;
+    background: #7dbda2;
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.buttons-homepage {
+    text-align: center;
+}
+
+.buttons-homepage a:nth-of-type(2) {
+    /* background: #ed6e27; */
+}
+
+ul.chosen-results li:hover,
+ul.chosen-results-opboeken li:hover {
+    background: #3d5f51;
+}
+
+.logo a {
+    vertical-align: middle;
+}
+
+.logo i {
+    font-size: 28px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.status-wrapper {
+    position: absolute;
+    top: -100px;
+    right: 10px;
+    background: #dcffe7;
+    color: white;
+    padding: 14px 30px;
+    border-radius: 6px;
+    border-left: 4px solid #4ebf4e;
+    transition: all 1000ms ease;
+}
+
+.status-wrapper p {
+    color: rgb(22 101 52);
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: normal;
+    font-family: system-ui;
+    margin: 0px;
+    padding: 0px;
+}
+
+.status-container i,
+.status-container p {
+    display: inline;
+}
+
+.status-container i {
+    background: green;
+    padding: 4px;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+.exact-wrapper {
+    width: 500px;
+    margin: 0 auto;
+    /* position: relative; */
+}
+
+.exact-container {
+    position: absolute;
+    text-align: center;
+    margin: 0 auto;
+    left: calc(50% - 25px);
+    bottom: 25px;
+}
+
+.exact-wrapper img {
+    max-width: 35px;
+    bottom: 0px;
+}

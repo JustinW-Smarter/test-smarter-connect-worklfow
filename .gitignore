@@ -1,0 +1,47 @@
+/*
+
+# Voeg ! + file of folder toe om deze door git te worden gezien, vanaf hieronder
+
+# Core files voor git functionaliteit
+!.gitignore
+!composer.json
+!composer.lock
+!.htaccess
+!README.md
+!Docker-startup.md
+
+# root files
+!index.php
+!dashboard.php
+!dbConfig.php
+!exact.php
+!inloggen.php
+!pdf.php
+!picklocaties.php
+!requests.php
+!uitloggen.php
+!klanten.php
+!routes-default.php
+!routes.php
+!salesorderlines.php
+!verzamelpicklijsten.php
+!zichtbare-routedagen.php
+!ZAuFRJELIGMdNhYsLUlb.php
+# temp naar betere locatie verplaatsen
+!htmlvalidate.json
+!registreren.php
+
+# subfolders
+!assets/
+!config/
+!cores/
+!modules/
+!.github/
+
+# Specifieke files in subfolders negeren
+modules/error_log
+modules/*.log
+modules/debug_*
+modules/common/
+.DS_Store
+__MACOSX

@@ -1,0 +1,188 @@
+name: Feature into development
+
+on:
+  pull_request:
+    branches:
+      - development
+
+jobs:
+  lint-html:
+    uses: ./.github/workflows/linter-html.yml
+
+  lint-css:
+    uses: ./.github/workflows/linter-css.yml
+
+  lint-js:
+    uses: ./.github/workflows/linter-js.yml
+
+  lint-php:
+    uses: ./.github/workflows/linter-php.yml
+
+#  commit-message-lint:
+#    uses: ./.github/workflows/lint/lint-commit-message.yml
+
+# Aparte repo voor de workflows, makkelijker herbruikbaar
+  reports:
+    needs: [ lint-html, lint-css, lint-js, lint-php ]
+    name: Log reports
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download script en voer uit
+        run: |
+          if [ ! -f .github/scripts/download-artifacts.sh ]; then
+            echo "❌ Script ontbreekt!"
+            exit 1
+          fi
+          chmod +x .github/scripts/download-artifacts.sh
+          .github/scripts/download-artifacts.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Zet gedownloade artifacts terug naar root
+        run: |
+          cp artifacts/*/*.txt . || true
+          cp artifacts/*/*.sarif . || true
+
+      - name: HTML-validate Results Report
+        run: |
+          echo "---- HTML-validate Report Result ----"
+          if [ "$(stat -c %s html-validate-report.txt)" -gt 1 ]; then
+            cat html-validate-report.txt
+          else
+            echo "No HTML issues found."
+          fi
+          echo "---- -------------------- ----"
+
+      - name: Stylelint Results Report
+        run: |
+          echo "---- Stylelint Report Result ----"
+          if [ "$(stat -c %s stylelint-report.txt)" -gt 1 ]; then
+            cat stylelint-report.txt
+          else
+            echo "No CSS issues found."
+          fi
+          echo "---- -------------------- ----"
+
+      - name: Eslint Results Report
+        run: |
+          echo "---- Eslint Report Result ----"
+          if [ "$(stat -c %s eslint-report.txt)" -gt 1 ]; then
+            cat eslint-report.txt
+          else
+            echo "No Javascript issues found."
+          fi
+          echo "---- -------------------- ----"  
+
+      - name: PHP Code Sniffer Results Report
+        run: |
+          echo "---- PHP Code Sniffer Report Result ----"
+          if [ "$(stat -c %s phpcs-report.txt)" -gt 1 ]; then
+            cat phpcs-report.txt
+          else
+            echo "No PHP issues found."
+          fi
+          echo "---- -------------------- ----"
+
+  error-handling:
+    needs: [ lint-html, lint-css, lint-js, lint-php ]
+    name: Error handlers voor lint reports
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download script en voer uit
+        run: |
+          if [ ! -f .github/scripts/download-artifacts.sh ]; then
+            echo "❌ Script ontbreekt!"
+            exit 1
+          fi
+          chmod +x .github/scripts/download-artifacts.sh
+          .github/scripts/download-artifacts.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Zet gedownloade artifacts terug naar root
+        run: |
+          cp artifacts/*/*.txt . || true
+          cp artifacts/*/*.sarif . || true
+
+      - name: Foutcontrole HTML Validate
+        run: |
+          if [ -f html-validate-report.txt ]; then
+            if grep -q "error" html-validate-report.txt; then
+              echo "HTML Validate errors found"
+              exit 1
+            else
+              echo "No HTML Validate errors found"
+            fi
+          else
+            echo "html-validate-report.txt niet gevonden"
+          fi
+
+      - name: Foutcontrole Stylelint
+        run: |
+          if [ -f stylelint-report.txt ]; then
+            if grep -q "error" stylelint-report.txt; then
+              echo "Stylelint errors found"
+              exit 1
+            else
+              echo "No Stylelint errors found"
+            fi
+          else
+            echo "stylelint-report.txt niet gevonden"
+          fi
+
+      - name: Foutcontrole Eslint
+        run: |
+          if [ -f eslint-report.txt ]; then
+            if grep -q "error" eslint-report.txt; then
+              echo "Eslint errors found"
+              exit 1
+            else
+              echo "No Eslint errors found"
+            fi
+          else
+            echo "eslint-report.txt niet gevonden"
+          fi
+
+      - name: Foutcontrole PHP Code Sniffer
+        run: |
+          if [ -f phpcs-report.txt ]; then
+            if grep -q "error" phpcs-report.txt; then
+              echo "PHP Code Sniffer errors found"
+              exit 1
+            else
+              echo "No PHP Code Sniffer errors found"
+            fi
+          else
+            echo "phpcs-report.txt niet gevonden"
+          fi
+
+#  tag-version:
+#    name: 🏷️ Tag on PR Complete
+#    needs: [error-handling]
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout repo
+#        uses: actions/checkout@v4
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Setup Git config
+#        run: |
+#          git config user.name "github-actions[bot]"
+#          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#
+#      - name: Run bump-version script
+#        run: .github/scripts/update-version.sh
+#
+#      - name: Create Git tag (if needed)
+#        if: env.bump == 'yes'
+#        run: |
+#          git tag ${{ env.new_tag }}
+#          git push origin ${{ env.new_tag }}

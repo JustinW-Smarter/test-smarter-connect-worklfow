@@ -1,0 +1,29 @@
+name: Reusable PHP linter
+
+on:
+  workflow_call:
+
+jobs:
+  phpcs:
+    name: PHP Code Sniffer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install PHP_CodeSniffer
+        run: composer global require "squizlabs/php_codesniffer=*"
+
+      - name: Run PHPCS
+        run: |
+          FILES=$(find . -type f \( -name "*.php" -o -name "*.tpl" -o -name "*.html" -o -name "*.htm" -o -name "*.phtml" -o -name "*.inc" \))
+          ~/.composer/vendor/bin/phpcbf --standard=PSR12 $FILES || true
+          ~/.composer/vendor/bin/phpcs --standard=PSR12 $FILES > phpcs-report.txt || true
+          [ -s phpcs-report.txt ] || echo "" > phpcs-report.txt
+          cat phpcs-report.txt
+
+      - name: Upload PHP Code Sniffer Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpcs-report
+          path: phpcs-report.txt

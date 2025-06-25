@@ -1,0 +1,182 @@
+* {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#wrapper {
+    margin: 0 auto;
+    max-width: 100%;
+    width: 500px;
+    padding-left: 0px;
+    padding-right: 0px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#arrow {
+    color: #000;
+}
+
+#inner-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+}
+
+
+.fixed-header {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    padding: 10px 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+
+.arrow-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    font-size: 30px;
+}
+
+
+.main-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.main-title h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.picklijst-name {
+    padding: 20px;
+    background-color: white;
+    margin-bottom: 2px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #777;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+    background-color: #ff3b30;
+}
+
+
+.order-details {
+    flex: 1;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+}
+
+.product-image i {
+    font-size: 30px;
+    background-color: #cecdcd;
+    color: #787878;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.product-details {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.product-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+
+}
+
+.product-code {
+    color: #777;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.product-quantity {
+    /* text-align: center; */
+}
+
+.product-quantity p {
+    font-weight: bold;
+    color: #3a3a3a;
+    font-size: 20px;
+}
+
+.product-quantity span {
+    text-align: right;
+    font-size: 14px;
+    color: #777;
+    font-weight: 600;
+}
+
+
+.action-buttons {
+    display: flex;
+    background-color: white;
+    border-top: 1px solid #ddd;
+
+}
+
+.action-buttons button {
+    background-color: #f3f3f3;
+    border: 1px solid #ddd;
+    padding: 30px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.action-buttons button:hover {
+    background-color: #cecdcd;
+}
+
+.product-image {
+    padding-right: 20px;
+}

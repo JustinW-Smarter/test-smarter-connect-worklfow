@@ -1,0 +1,32 @@
+name: ❌ Block Direct Pushes
+
+on:
+  workflow_call:
+  push:
+    branches: [production, test, development]
+  pull_request:
+    branches: [production, test, development]
+
+jobs:
+  block-direct-push:
+    name: block-direct-push
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ github.actor == 'github-actions[bot]' }}
+    steps:
+      - name: Fail on direct push
+        run: |
+          if [[ "${{ github.actor }}" != "kevinsmarter" && "${{ github.actor }}" != "github-actions[bot]" ]]; then
+            echo "🚫 Direct push blocked"
+            exit 1
+          else
+            echo "✅ Push allowed"
+          fi
+
+  block-direct-push-pr:
+    name: block-direct-push
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Allow PR
+        run: echo "✅ This is a PR, push block skipped"

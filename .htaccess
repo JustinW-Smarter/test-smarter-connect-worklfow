@@ -1,0 +1,44 @@
+# BEGIN HTACCESS
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^/]+)/$ $1.php
+RewriteRule ^([^/]+)/([^/]+)/$ /$1/$2.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
+RewriteRule (.*)$ /$1/ [R=301,L]
+
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/png "access plus 10 seconds"
+  ExpiresByType image/gif "access plus 10 seconds"
+  ExpiresByType image/jpg "access plus 10 seconds"
+  ExpiresByType image/jpeg "access plus 10 seconds"
+  ExpiresByType text/javascript "access plus 10 seconds"
+  ExpiresByType application/x-javascript  "access plus 10 seconds"
+  ExpiresByType application/javascript  "access plus 10 seconds"
+  ExpiresByType text/css "access plus 10 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "no-referrer-when-downgrade"
+  Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header set Content-Security-Policy "upgrade-insecure-requests"
+</IfModule>
+
+DirectoryIndex index.php
+ErrorDocument 404 /404.php
+
+# END HTACCESS
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# This domain inherits the “PHP” package.
+# php -- END cPanel-generated handler, do not edit
