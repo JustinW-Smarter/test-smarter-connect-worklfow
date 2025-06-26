@@ -1,7 +1,6 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/modules/functions.php");
 require_once('modules/isloggedinCheck.php');
-
 ?>
 
 <?php if (IntestingHelper::InTesting()): ?>
